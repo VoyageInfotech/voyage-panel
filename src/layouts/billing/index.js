@@ -35,9 +35,13 @@ function Testimonial() {
       formData.append("image", file);
 
       try {
-        const response = await axios.post("http://localhost:8000/api/upload-image", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const response = await axios.post(
+          "https://voyage-back.onrender.com/api/upload-image",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
         setImage({
           url: response.data.url,
           public_id: response.data.public_id,
@@ -53,7 +57,7 @@ function Testimonial() {
 
   const fetchTestimonials = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/testimonial/view");
+      const response = await axios.get("https://voyage-back.onrender.com/api/testimonial/view");
       setTestimonials(response.data.data);
     } catch (err) {
       console.error(err);
@@ -63,7 +67,7 @@ function Testimonial() {
 
   const handleDeleteTestimonial = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/api/testimonial/${id}`);
+      const response = await axios.delete(`https://voyage-back.onrender.com/api/testimonial/${id}`);
       if (response.status === 200) {
         toast.success(response.data.message);
         fetchTestimonials();
@@ -94,7 +98,7 @@ function Testimonial() {
               onSubmit={async (values, { setSubmitting, resetForm }) => {
                 try {
                   const response = await axios.post(
-                    "http://localhost:8000/api/testimonial/add",
+                    "https://voyage-back.onrender.com/api/testimonial/add",
                     values
                   );
                   toast.success(response.data.message);

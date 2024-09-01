@@ -8,7 +8,7 @@ export default function Data() {
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/contact/view");
+        const response = await axios.get("https://voyage-back.onrender.com/api/contact/view");
         setCandidates(response?.data?.data);
         console.log("resume", response.data?.data); // Logging the fetched data
       } catch (error) {

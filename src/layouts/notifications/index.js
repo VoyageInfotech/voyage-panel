@@ -36,7 +36,7 @@ function Notifications() {
       formData.append("image", file);
 
       axios
-        .post("http://localhost:8000/api/upload-image", formData, {
+        .post("https://voyage-back.onrender.com/api/upload-image", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
@@ -55,7 +55,7 @@ function Notifications() {
 
   const fetchTechnology = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/technology/view");
+      const response = await axios.get("https://voyage-back.onrender.com/api/technology/view");
       setTechnology(response?.data?.data || []);
     } catch (err) {
       console.error(err);
@@ -65,7 +65,7 @@ function Notifications() {
 
   const handleDeleteTechnology = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/api/technology/${id}`);
+      const response = await axios.delete(`https://voyage-back.onrender.com/api/technology/${id}`);
       if (response.status === 200) {
         toast.success(response.data.message);
         fetchTechnology();
@@ -98,7 +98,7 @@ function Notifications() {
                 try {
                   console.log("Form values:", values); // Debugging
                   const response = await axios.post(
-                    "http://localhost:8000/api/technology/add",
+                    "https://voyage-back.onrender.com/api/technology/add",
                     values
                   );
                   toast.success(response.data.message);
