@@ -20,7 +20,7 @@ import {
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
+  const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
 
@@ -47,6 +47,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
+
+  // Fetch user data from local storage
+  const name = localStorage.getItem("name"); // Adjust key as necessary
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route }) => {
@@ -129,20 +132,17 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           {brand && (
             <MDBox
               component="img"
-              src="https://i.postimg.cc/7Ls7Qygr/Voyage-Logo.png"
+              src="https://i.postimg.cc/0QyCcTMZ/voyage.png"
               alt="Brand"
-              width="2rem"
+              width="100%"
             />
           )}
-          <MDBox
-            width={!brandName && "100%"}
-            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
-          >
-            <MDTypography component="h6" variant="button" fontWeight="medium" color={textColor}>
-              Voyage Infotech
-            </MDTypography>
-          </MDBox>
         </MDBox>
+        {name && (
+          <MDTypography variant="h6" sx={{ pt: 2 }} color={textColor}>
+            Welcome, {name.toLocaleUpperCase()}
+          </MDTypography>
+        )}
       </MDBox>
       <Divider
         light={
