@@ -15,8 +15,10 @@ import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
+import colors from "assets/theme/base/colors";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { Typography } from "@mui/material";
 
 function Notifications() {
   const navigate = useNavigate();
@@ -82,10 +84,20 @@ function Notifications() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <MDBox mt={6} mb={3}>
         <Grid container spacing={10} justifyContent="center">
-          <Grid item xs={12} lg={4}>
+          <Grid item xs={12} lg={3}>
             <Formik
               initialValues={{
                 LanguagesLogo: "",
@@ -96,7 +108,7 @@ function Notifications() {
               validationSchema={validationSchema}
               onSubmit={async (values, { setSubmitting, resetForm }) => {
                 try {
-                  console.log("Form values:", values); // Debugging
+                  console.log("Form values:", values);
                   const response = await axios.post(
                     "https://voyage-back.onrender.com/api/technology/add",
                     values
@@ -132,6 +144,15 @@ function Notifications() {
                         margin: "auto",
                       }}
                     />
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: "text.secondary",
+                        textAlign: "center",
+                      }}
+                    >
+                      Only allow JPG and PNG file
+                    </Typography>
                     <Field
                       name="LanguagesName"
                       as={TextField}
@@ -162,7 +183,9 @@ function Notifications() {
                     <Button
                       type="submit"
                       variant="contained"
-                      color="primary"
+                      sx={{
+                        color: "#fff",
+                      }}
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
@@ -172,7 +195,7 @@ function Notifications() {
               )}
             </Formik>
           </Grid>
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12} lg={9}>
             <Grid container spacing={3}>
               {technology.map((tech) => (
                 <Grid item xs={12} sm={6} md={3} key={tech._id}>

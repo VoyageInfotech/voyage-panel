@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Grid from "@mui/material/Grid";
@@ -8,11 +8,13 @@ import Button from "@mui/material/Button";
 import MDBox from "components/MDBox";
 import colors from "assets/theme/base/colors";
 import MDTypography from "components/MDTypography";
-import { Box, Link } from "@mui/material";
-import axios from "axios"; // Import Axios
-import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
-import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
+import { Box, Link, InputAdornment, IconButton } from "@mui/material";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -27,6 +29,8 @@ const validationSchema = Yup.object({
 
 function Register() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -35,34 +39,38 @@ function Register() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
       try {
         const response = await axios.post(
           "https://voyage-back.onrender.com/api/user/register",
-          values,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          values
         );
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("name", response.data.name);
-        toast.success("Registration successful: " + response.data.message);
+        toast.success(response.data.message);
         navigate("/login");
       } catch (error) {
-        if (error.response) {
-          toast.error("Registration failed: " + error.response.data.message);
-        } else {
-          toast.error("Error during registration: " + error.message);
-        }
+        toast.error("Registration failed: " + (error.response?.data?.message || error.message));
       }
     },
   });
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
-      <ToastContainer /> {/* Add ToastContainer for notifications */}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <MDBox
         pt={6}
         pb={3}
@@ -70,7 +78,7 @@ function Register() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "100vh", // Ensures full viewport height for vertical centering
+          height: "100vh",
         }}
       >
         <Grid container justifyContent="center">
@@ -134,7 +142,7 @@ function Register() {
                   <TextField
                     fullWidth
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     variant="outlined"
                     name="password"
                     value={formik.values.password}
@@ -142,6 +150,15 @@ function Register() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleClickShowPassword} edge="end">
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </MDBox>
 

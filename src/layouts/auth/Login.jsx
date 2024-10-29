@@ -1,19 +1,26 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import {
+  Grid,
+  Card,
+  TextField,
+  Button,
+  Box,
+  Link,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import MDBox from "components/MDBox";
 import colors from "assets/theme/base/colors";
 import MDTypography from "components/MDTypography";
-import { Box, Link } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// Validation schema using Yup
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email format").required("Email is required"),
   password: Yup.string()
@@ -23,6 +30,10 @@ const validationSchema = Yup.object({
 
 function Login() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -35,13 +46,16 @@ function Login() {
           "https://voyage-back.onrender.com/api/user/login",
           values
         );
-        const { token, message, user } = response.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("name", user);
-        navigate("/resume");
+
+        if (response.status === 200) {
+          toast.success(response.data.message);
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("name", response.data.user);
+          navigate("/resume");
+        }
       } catch (error) {
         toast.error(error.response?.data?.message || "Login Failed. Please try again.");
-        console.error("Login error:", error.response.data.message);
+        console.error("Login error:", error.response?.data?.message);
       }
     },
   });
@@ -53,10 +67,20 @@ function Login() {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
-        backgroundColor: "#f0f2f5",
+        m: 2,
       }}
     >
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <MDBox pt={6} pb={3} width="100%">
         <Grid container justifyContent="center">
           <Grid item xs={12} md={4} lg={3}>
@@ -105,7 +129,7 @@ function Login() {
                   <TextField
                     fullWidth
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     variant="outlined"
                     name="password"
                     value={formik.values.password}
@@ -113,6 +137,15 @@ function Login() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleClickShowPassword} edge="end">
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </MDBox>
                 <MDBox mt={2} width="100%">

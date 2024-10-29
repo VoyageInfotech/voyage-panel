@@ -1,10 +1,10 @@
 {
-  "name": "material-dashboard-2-react",
+  "name": "voyage-info-tech-admin-panel",
   "version": "2.2.0",
   "private": true,
   "author": "Creative Tim",
   "license": "See license in https://www.creative-tim.com/license",
-  "description": "React version of Material Dashboard 2 by Creative Tim",
+  "description": "Voyage-info-tech admin panel ",
   "bugs": {
     "url": "https://github.com/creativetimofficial/material-dashboard-react/issues"
   },

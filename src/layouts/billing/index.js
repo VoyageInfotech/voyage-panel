@@ -84,7 +84,17 @@ function Testimonial() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <MDBox mt={6} mb={3}>
         <Grid container spacing={6} justifyContent="center">
           <Grid item xs={12} md={4}>
@@ -164,7 +174,9 @@ function Testimonial() {
                       variant="contained"
                       color="primary"
                       disabled={isSubmitting}
-                      fullWidth
+                      sx={{
+                        color: "#fff",
+                      }}
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </Button>
