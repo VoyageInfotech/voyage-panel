@@ -8,11 +8,13 @@ import DataTable from "examples/Tables/DataTable";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import ContactTableData from "layouts/tables/data/ContactTableData";
 import gettouchTableData from "layouts/tables/data/gettouchTableData";
+import UserTableData from "layouts/tables/data/UserTableData";
 
 function Tables() {
   const { columns: pColumns, rows: pRows } = projectsTableData();
   const { columns: cColumns, rows: cRows } = ContactTableData();
   const { columns: gColumns, rows: gRows } = gettouchTableData();
+  const { columns: UColumns, rows: URows } = UserTableData();
 
   return (
     <DashboardLayout>
@@ -92,6 +94,33 @@ function Tables() {
               <MDBox pt={3}>
                 <DataTable
                   table={{ columns: gColumns, rows: gRows }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  User
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                <DataTable
+                  table={{ columns: UColumns, rows: URows }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}

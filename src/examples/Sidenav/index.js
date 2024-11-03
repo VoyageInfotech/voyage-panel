@@ -49,7 +49,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }, [dispatch, location]);
 
   // Fetch user data from local storage
-  const name = localStorage.getItem("name"); // Adjust key as necessary
+  const name = localStorage.getItem("name");
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route }) => {

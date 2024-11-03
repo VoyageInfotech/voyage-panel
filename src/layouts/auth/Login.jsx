@@ -46,12 +46,13 @@ function Login() {
           "https://voyage-back.onrender.com/api/user/login",
           values
         );
-
         if (response.status === 200) {
           toast.success(response.data.message);
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("name", response.data.user);
+          localStorage.setItem("name", response.data.user.name);
+          localStorage.setItem("role", response.data.user.role);
           navigate("/resume");
+          window.location.reload();
         }
       } catch (error) {
         toast.error(error.response?.data?.message || "Login Failed. Please try again.");
